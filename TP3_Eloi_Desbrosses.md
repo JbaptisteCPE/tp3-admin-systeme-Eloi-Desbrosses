@@ -193,6 +193,8 @@ spécifié dans cette commande.**
 serveur@serveur:~$ dpkg -L coreutils | grep bin 
 ```
 
+la commande "[" est la commande de test. Elle permet d'écrire des conditions dont ont peut visionner les résultats à l'aide des opérateur && et ||
+
 ## Exercice 5. aptitude
 
 **Installez le paquet emacs à l’aide de la version graphique d’aptitude.**
