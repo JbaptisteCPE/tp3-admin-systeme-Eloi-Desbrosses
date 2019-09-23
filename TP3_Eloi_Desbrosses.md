@@ -153,3 +153,25 @@ Il s'agit du packer `sudoku`
 serveur@serveur:~$ grep "apt install" /var/log/apt/history.log
 Commandline: apt install fortunes
 ```
+
+## Exercice 2.
+
+**A partir de quel paquet est installée la commande ls ? Comment obtenir cette information en une seule
+commande, pour n’importe quel programme (indice : la réponse est dans le poly de cours 2, dans la liste des
+commandes utiles) ?** 
+
+```
+serveur@serveur:/usr/bin$ dpkg -S $(which ls) 
+coreutils: /bin/ls
+```
+
+**Utilisez la réponse à pour écrire un script appelé origine-commande (sans l’extension
+.sh) prenant en argument le nom d’une commande, et indiquant quel paquet l’a installée.**
+
+```
+if [ -z "$1" ]; then
+        echo "no argument, provide a command name."
+else
+        dpkg -S $(which "$1");
+fi
+```
