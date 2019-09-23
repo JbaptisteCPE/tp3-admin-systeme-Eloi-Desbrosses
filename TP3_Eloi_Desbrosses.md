@@ -161,7 +161,7 @@ commande, pour n’importe quel programme (indice : la réponse est dans le poly
 commandes utiles) ?** 
 
 ```
-serveur@serveur:/usr/bin$ dpkg -S $(which ls) 
+serveur@serveur: $ which -a ls | tail -n 1 | xargs dpkg -S 
 coreutils: /bin/ls
 ```
 
@@ -172,6 +172,33 @@ coreutils: /bin/ls
 if [ -z "$1" ]; then
         echo "no argument, provide a command name."
 else
-        dpkg -S $(which "$1");
+        which -a "$1" | tail -n 1 | xargs dpkg -S
 fi
 ```
+
+## Exercice 3.
+
+**Ecrire une commande qui affiche “INSTALLÉ” ou “NON INSTALLÉ” selon le nom et le statut du package
+spécifié dans cette commande.**
+
+```
+(dpkg -l "fortunes" | grep "^i") && echo "installé" || echo "non installé"
+```
+
+## Exercice 4.
+
+**Lister les programmes livrés avec coreutils. A quoi sert la commande "[" et comment afficher ce qu’elle retourne ?**
+
+```
+serveur@serveur:~$ dpkg -L coreutils | grep bin 
+```
+
+## Exercice 5. aptitude
+
+**Installez le paquet emacs à l’aide de la version graphique d’aptitude.**
+
+Pour des raisons logique, je ne vais pas copier/coller la totalité de l'interface d'aptutide.
+Basiquement, j'ai utilisé la fonction de recher `/` pour rechercher emacs, puis j'ai utiliser la touche `+` pour accepter d'installer le packet, puis deux fois `g` pour comfirmer le téléchargement et lancer l'installation.
+
+
+
