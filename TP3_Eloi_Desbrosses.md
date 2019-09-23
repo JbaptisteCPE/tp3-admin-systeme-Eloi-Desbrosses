@@ -203,9 +203,9 @@ Basiquement, j'ai utilisé la fonction de recher `/` pour rechercher emacs, puis
 
 ## Exercice 6. Installation d’un paquet par PPA
 
-Certains logiciels ne figurent pas dans les dépôts officiels. C’est le cas par exemple de la version ”officielle”
-de Java depuis qu’elle est développée par Oracle. Dans ces cas, on peut parfois se tourner vers un ”dépôt
-personnel” ou PPA.
+### Le PPA est mort, l'installer ne fonctionns plus, il est nécessaire d'utiliser l'installer local qui nécessite de récupérer le .tar.gz depuis le site d'oracle qui lui-même nécessite un compte...
+
+Certains logiciels ne figurent pas dans les dépôts officiels. C’est le cas par exemple de la version ”officielle” de Java depuis qu’elle est développée par Oracle. Dans ces cas, on peut parfois se tourner vers un ”dépôt personnel” ou PPA.
 
 **1. Installer la version Oracle de Java (avec l’ajout des PPA)**
 ```
@@ -217,6 +217,8 @@ sudo apt install oracle-java11-installer
 **2. Vérifiez qu’un nouveau fichier a été créé dans /etc/apt/sources.list.d. Que contient-il ?**
 
 ## Exercice 7. Création de dépôt personnalisé
+
+### Pour je ne sais qu'elle raison, je n'arrive pas à signé mon dépot. Je ne peux donc pas installer le package.
 
 Dans cet exercice, vous allez créer vos propres paquets et dépôts, ce qui vous permettra de gérer les
 programmes que vous écrivez comme s’ils provenaient de dépôts officiels.
@@ -236,7 +238,7 @@ Section: utils #notre programme est un utilitaire
 Priority: optional #ce n'est pas un paquet indispendable
 ```
 
-## 3. Revenez dans le dossier parent de origine-commande (normalement, c’est votre $HOME) et tapez la commande suivante pour construire le paquet :
+**3. Revenez dans le dossier parent de origine-commande (normalement, c’est votre $HOME) et tapez la commande suivante pour construire le paquet :**
 
 ```
 dpkg-deb --build origine-commande
@@ -248,7 +250,16 @@ Création du dépôt personnel avec reprepro
 
 **1. Dans votre dossier personnel, commencez par créer un dossier repo-cpe. Ce sera la racine de votre dépôt**
 
+```
+root@serveur:~# mkdir repo-cpe
+```
+
 **2. Ajoutez-y deux sous-dossiers : conf (qui contiendra la configuration du dépôt) et packages (qui contiendra nos paquets)**
+
+```
+root@serveur:~# mkdir repo-cpe/conf
+root@serveur:~# mkdir repo-cpe/packages
+```
 
 **3. Dans conf, créez le fichier distributions suivant :**
 
@@ -268,6 +279,8 @@ Description: Une description du dépôt
 reprepro -b . export
 ```
 
+Plusieurs dossiers tel que "db" ou "dists" sont apparus.
+
 ***5. Copiez le paquet origine-commande.deb créé précédemment dans le dossier packages du dépôt, puis, à la racine du dépôt, exécutez la commande**
 
 ```
@@ -275,6 +288,11 @@ reprepro -b . includedeb cosmic origine-commande.deb
 ```
 
 afin que votre paquet soit inscrit dans le dépôt.
+
+```
+root@serveur:~# cp origine-commande.deb repo-cpe/packages/origine-commande.deb
+```
+
 
 ***6. Il faut à présent indiquer à apt qu’il existe un nouveau dépôt dans lequel il peut trouver des logiciels. Pour cela, créez (avec sudo) dans le dossier /etc/apt/sources.list.d le fichier repo-cpe.list contenant :**
 
@@ -330,10 +348,18 @@ Félicitations ! La configuration est (enfin) terminée ! Vérifiez que vous pou
 
 ## Exercice 8. Installation d’un logiciel à partir du code source
 
+### Lors de l'exécution du script config, j'ai une erreur: 
+
+```
+checking for gcc option to accept ISO C99... none needed
+./configure: line 4091: syntax error near unexpected token `CAIRO,'
+./configure: line 4091: `        PKG_CHECK_MODULES(CAIRO, cairo,, AC_MSG_ERROR(['
+```
+### Je n'arrive pas à en trouver la cause
+
 Lorsqu’un logiciel n’est disponible ni dans les dépôts officiels, ni dans un PPA, ou encore parce qu’on souhaite n’installer qu’une partie de ses fonctionnalités, on peut se tourner vers la compilation du code source.
 
-Malheureusement, cette installation ”à la main” fait qu’on ne propose pas des bénéfices de la gestion de
-paquets apportée par dpkg ou apt. Heureusement, il est possible de transformer un logiciel installé ”à la main” en un paquet, et de le gérer ensuite avec apt ; c’est ce que permet par exemple checkinstall.
+Malheureusement, cette installation ”à la main” fait qu’on ne propose pas des bénéfices de la gestion de paquets apportée par dpkg ou apt. Heureusement, il est possible de transformer un logiciel installé ”à la main” en un paquet, et de le gérer ensuite avec apt ; c’est ce que permet par exemple checkinstall.
 
 **1. Commencez par cloner le dépôt git suivant :**
 
